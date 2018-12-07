@@ -27,7 +27,7 @@
         var app = new PIXI.Application({
             width:w,
             height:h,
-            antialias:true,
+            antialias:false,
             transparent:true,
             resolution:1
         });
@@ -51,27 +51,30 @@
         
         
 
+        //Text codes ↓
+        var graphicTextField = new randomText(PIXI,onSizeUpdated);
+        app.stage.addChild(graphicTextField.me);
+        graphicTextField.init('bDcjhgj☺hgjghj$$$$$gh');
+
+        function onSizeUpdated()
+        {
+            graphicTextField.me.x = (w-graphicTextField.getWidth())/2;
+            graphicTextField.me.y = (h)/2;
+        }
+
+
+        //Frame control ↓
+        
+
         var lastTime = new Date().getTime();
+        var fr = 60 ;
         app.ticker.add(()=>{
             var Ctime = new Date().getTime();
             fr += (1000/(Ctime-lastTime)-fr)/10;
             textField.text = Math.round(fr)+" FPS";
             lastTime = Ctime ;
-            //cardGameSprite.enterFrame()
         });
 
-        //Text codes ↓
-
-        var graphicTextField = new randomText(PIXI,w,h);
-        app.stage.addChild(graphicTextField.me);
-        graphicTextField.init('bDc');
-        graphicTextField.me.x = (w-graphicTextField.me.width)/2;
-        graphicTextField.me.y = (h-graphicTextField.me.height)/2;
-
-        //Game codes ↓
-        //cardGameSprite = cardGame(PIXI,w,h);
-        //app.stage.addChild(cardGameSprite.me);
-        var fr = 60 ;
     </script>
 </body>
 <style>
