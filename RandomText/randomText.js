@@ -6,6 +6,7 @@ var randomText = function(PIXI,onSizeUpdated=()=>{})
     var x = 0 ;
 
     var lastText = '' ;
+    var lastSizeList = [] ;
     var emojiesReady = false ;
 
     const emojiList = [
@@ -26,18 +27,25 @@ var randomText = function(PIXI,onSizeUpdated=()=>{})
     function emojiesLoaded()
     {
         emojiesReady = true ;
-        init(lastText);
+        init(lastText,lastSizeList);
     }
 
-    init = this.init = function(text='')
+    init = this.init = function(text='',sizeList=[])
     {
         lastText = text ;
+        lastSizeList = sizeList ;
 
         me.removeChildren();
         x = 0 ; 
+        var lastSize = 16 ;
+        var lastHeight = 30 ;
         for(var i = 0 ; i<text.length ; i++)
         {
             var currentText = text.charAt(i) ;
+            if(lastSizeList.length>i)
+            {
+                lastSize = lastSizeList[i] ;
+            }
             if(emojiesReady)
             {
                 var foundedEmojiIndex = emojiChars.indexOf(currentText);
@@ -46,12 +54,13 @@ var randomText = function(PIXI,onSizeUpdated=()=>{})
                     var emoj = new Sprite(PIXI.loader.resources[emojiList[foundedEmojiIndex]].texture);
                     me.addChild(emoj);
                     emoj.x = x ;
+                    emoj.width = emoj.height = lastHeight;
                     x+=emoj.width ;
                     continue;
                 }
             }
             var style = new PIXI.TextStyle({
-                fontSize: 16,
+                fontSize: lastSize,
                 fill: "white",
             });
 
@@ -60,7 +69,8 @@ var randomText = function(PIXI,onSizeUpdated=()=>{})
             textField.x = x ;
             //Calculate text size here
             var textMetrics = PIXI.TextMetrics.measureText(currentText, style);
-            x+=textMetrics.width ;
+            lastHeight = textMetrics.height ;
+            x+= textMetrics.width ;
         }
 
         onSizeUpdated();
