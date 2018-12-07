@@ -30,6 +30,7 @@ var randomText = function(PIXI,onSizeUpdated=()=>{})
         init(lastText,lastSizeList);
     }
 
+    /**Pass your text and size list here to make you the text field */
     init = this.init = function(text='',sizeList=[])
     {
         lastText = text ;
